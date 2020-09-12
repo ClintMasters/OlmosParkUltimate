@@ -1,21 +1,34 @@
-import {Sequelize, DataTypes} from 'sequelize';
+import { Sequelize, DataTypes } from "sequelize";
 
-export const Player = (sequelize : Sequelize) => {
-    const Player = sequelize.define("player", {
-        name: {
-            type: DataTypes.STRING
-        }
-    })
+export const Player = (sequelize: Sequelize) => {
+  const Player = sequelize.define("player", {
+    name: {
+      type: DataTypes.STRING,
+    },
+  });
 
-    return Player;
-}
+  return Player;
+};
 
-export const Game = (sequelize : Sequelize) => {
+export const Game = (sequelize: Sequelize) => {
   const Game = sequelize.define("game", {
-      date: {
-          type: DataTypes.DATE
-      }
-  })
+    date: {
+      type: DataTypes.DATE,
+    },
+    order: {
+      type: DataTypes.INTEGER
+    }
+  });
 
   return Game;
-}
+};
+
+export const GamePlayer = (sequelize: Sequelize) => {
+  const GamePlayer = sequelize.define("gameplayer", {
+    win: {
+      type: DataTypes.BOOLEAN,
+    },
+  });
+
+  return GamePlayer;
+};

@@ -2,43 +2,28 @@ import express from "express";
 import { Op } from "sequelize";
 import { db } from "../Domain/db";
 import { Controller } from "../Models/UltimateModels";
-const Game = db.games;
+const GamePlayer = db.gameplayer;
 
 class GamesController extends Controller {
   constructor() {
-    super("/games");
+    super("/gameplayers");
     this.initializeRoutes();
   }
 
   public initializeRoutes() {
-    this.router.get(this.path + "/all", this.gamesGetAll);
-    this.router.get(this.path + "/findGames", this.findGames);
-    this.router.post(this.path + "/create", this.createGame);
-    this.router.delete(this.path + "/deleteAll", this.deleteAllGames);
+    this.router.get(this.path + "/all", this.getAllGamePlayers);
+    this.router.post(this.path + "/create", this.createGamePlayer);
+    this.router.delete(this.path + "/deleteAll", this.deleteAllGamePlayers);
   }
 
-  findGames = async (request: express.Request, response: express.Response) => {
-    const date = request.query.date;
-    console.log("DATE: ", date);
-    Game.findAll({ where: { date: date } })
-      .then((data: any) => {
-        response.send(data);
-      })
-      .catch((err: any) => {
-        response.status(500).send({
-          message: err.message || "Some error occurred while retrieving games.",
-        });
-      });
-  };
-
-  gamesGetAll = async (
+  getAllGamePlayers = async (
     request: express.Request,
     response: express.Response
   ) => {
-    const date = request.query.date;
-    var condition = date ? { date: {} } : null;
+    const name = request.query.name;
+    var condition = name ? { name: { [Op.iLike]: `%${name}%` } } : null;
 
-    Game.findAll()
+    GamePlayer.findAll()
       .then((data: any) => {
         response.send(data);
       })
@@ -49,22 +34,25 @@ class GamesController extends Controller {
       });
   };
 
-  createGame = async (request: express.Request, response: express.Response) => {
-    if (!request.body.date) {
+  createGamePlayer = async (
+    request: express.Request,
+    response: express.Response
+  ) => {
+    if (!request.body.gameId) {
       response.status(400).send({
-        message: "Date can not be empty!",
+        message: "Game Id can not be empty!",
       });
       return;
     }
 
     // Create a Game
-    const game = {
+    const gamePlayer = {
       date: request.body.date,
       order: request.body.order,
     };
 
     // Save Game in the database
-    Game.create(game)
+    GamePlayer.create(gamePlayer)
       .then((data) => {
         response.send(data);
       })
@@ -76,8 +64,11 @@ class GamesController extends Controller {
       });
   };
 
-  deleteAllGames = async (req: express.Request, res: express.Response) => {
-    Game.destroy({
+  deleteAllGamePlayers = async (
+    req: express.Request,
+    res: express.Response
+  ) => {
+    GamePlayer.destroy({
       where: {},
       truncate: false,
     })

@@ -1,9 +1,8 @@
-import { fakePlayers } from "../Models/UltimateModels";
-
 import express from "express";
-import { Controller } from "../Models/UltimateModels";
 import { Op } from "sequelize";
 import { db } from "../Domain/db";
+import { Controller } from "../Models/UltimateModels";
+
 const Player = db.players;
 
 class PlayersController extends Controller {
@@ -26,13 +25,13 @@ class PlayersController extends Controller {
     var condition = name ? { name: { [Op.iLike]: `%${name}%` } } : null;
 
     Player.findAll()
-      .then((data:any) => {
+      .then((data: any) => {
         response.send(data);
       })
-      .catch((err:any) => {
+      .catch((err: any) => {
         response.status(500).send({
           message:
-            err.message || "Some error occurred while retrieving tutorials.",
+            err.message || "Some error occurred while retrieving players.",
         });
       });
   };
@@ -66,24 +65,21 @@ class PlayersController extends Controller {
       });
   };
 
-  deleteAllPlayers = async (
-    req: express.Request,
-    res: express.Response
-  ) => {
+  deleteAllPlayers = async (req: express.Request, res: express.Response) => {
     Player.destroy({
       where: {},
-      truncate: false
+      truncate: false,
     })
-      .then(nums => {
+      .then((nums) => {
         res.send({ message: `${nums} Players were deleted successfully!` });
       })
-      .catch(err => {
+      .catch((err) => {
         res.status(500).send({
           message:
-            err.message || "Some error occurred while removing all players."
+            err.message || "Some error occurred while removing all players.",
         });
       });
-  }
+  };
 }
 
 export default PlayersController;

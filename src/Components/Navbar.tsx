@@ -1,18 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
   Nav,
+  Navbar,
+  NavbarBrand,
+  NavbarToggler,
   NavItem,
   NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  NavbarText
-} from 'reactstrap';
+} from "reactstrap";
 
 const NavBar: React.FC = (props) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,11 +24,17 @@ const NavBar: React.FC = (props) => {
             <NavItem>
               <NavLink href="/players">Players</NavLink>
             </NavItem>
+            <NavItem>
+              <NavLink href="/games">Games</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href="/updateStats">Update Stats</NavLink>
+            </NavItem>
           </Nav>
         </Collapse>
       </Navbar>
     </div>
   );
-}
+};
 
 export default NavBar;
